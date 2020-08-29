@@ -28,6 +28,15 @@ millisecond = 0 | .. | 999
 time = (hour, minute, second, millisecond)
 
 datetime = (date, time)
+
+iterator = {
+    moveNext = _ => bool
+    getCurrent = _ => _
+}
+sequence = {
+    getIterator = _ => iterator
+}
+array = sequence & { length = number }
 ```
 
 ## Imperitive functions
@@ -53,6 +62,8 @@ isAsleep = not isAwake
 `then` is a unit type that is passed into the `func` just to make it look nice. It's a little language trick.
 
 ```
+then = _
+
 if = condition => func => {
     condition --> (
         true => func then
@@ -72,6 +83,8 @@ if conditionIsSatisfied then => {
 Similarly, the `loop` function accepts a function that accepts `until` as a trick parameter.
 
 ```
+until = _
+
 loop = func => {
     if (func until) then => {
         // scary magic to goto start of the outer block

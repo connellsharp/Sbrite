@@ -1,4 +1,4 @@
-# Advanced Type System
+# Type System
 
 ## Everything is a type
 
@@ -34,4 +34,46 @@ This idea can be combined with a predicate function to create a refinement type.
 multipleOf5 = integer & { isValid = i => modulo i 5 == 0 }
 ```
 
-The type `multipleOf5` can only accept numbers that are multiples of 5. `10` is a valid `multipleOf5`.
+The type `multipleOf5` can only accept numbers that are multiples of 5. `10` is a `multipleOf5`.
+
+## The concretion problem
+
+> :warning: This is an unsolved problem.
+
+Functions that serialise a type for printing to the console or sending via an API request cannot be sure if given parameters or return values are concrete values or just subtypes. Consider this example:
+
+```
+delayedPrint = { message = string, delay = timespan } => {
+    sleep delay
+    print message
+}
+
+possibleNames = "Fred" | "Jane" | "Sam"
+
+delayedPrint { message = possibleNames, delay = seconds 200 }
+```
+
+One possibility is a special language 'type'. `"Fred" = string & concrete`.
+
+```
+"Fred" = string & {
+    length = 4
+}
+string = [char]
+[t] = {
+    moveNext = _ => bool
+    getCurrent = _ => t
+}
+serializable = {
+    serialize = _ => [byte]
+}
+known = {
+    length = int
+}
+
+
+delayedPrint = { message = string, delay = timespan } => {
+    print message.length  // 4 | 3
+}
+
+```

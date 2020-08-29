@@ -22,18 +22,33 @@ getCustomerEmail = customerId => {
 
 ## Yield return
 
-"Yield return" functionality from C# can be represented as an array of functions. We can chose to accept a parameter type of `yield` to make our intentions clearer, but the parameter is never used.
+A normal sequence is executed when assigned, like a tuple or block.
 
 ```
 numberWords = [
-    yield => "One"
-    yield => {
-        doSomeStuff _
-        return = "Two"
-    }.return
-    yield => "Three"
+    "One"
+    doSomeStuff _
+    "Two"
+    "Three"
 ]
 ```
+
+This will create an array of `_` types because the second value is in fact the return value of `doSomeStuff _`.
+
+With the `$` operator the execution is deferred until the sequence is iterated.
+
+```
+numberWords = $[
+    "One"
+
+    doSomeStuff _
+    "Two"
+    
+    "Three"
+]
+```
+
+This is syntactic sugar and compiles into a sequence of functions, each passing their assigned variables into the next.
 
 The `foreach` function iterates through each of these items, executes the function, then passes the return value into another function.
 
@@ -45,14 +60,13 @@ foreach numberWords numberWord => {
 
 ## Async await
 
-Awaiting a callback can be done with a sequence too. This time, a sequence of `task` objects.
+Awaiting a callback can be done with a sequence too. It is another yield return, but this time, a sequence of `task` objects.
 
 > :warning: Not really sure how this can fit together. Work in progress.
 
 ```
-getUser = await [
+getUser = await $[
     response = client.get $"/user/{}"
-    response
     json = parseJson response.body
 ]
 ```

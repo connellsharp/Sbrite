@@ -53,7 +53,7 @@ identifier = username | email
 suit = hearts | clubs | diamonds | spades
 ```
 
-An `identifier` can be either a `username` or an `email`.
+An `identifier` can be either a `username` or an `email`. Both `username` and `email` are now subtypes of `identifier`.
 
 ### Intersections `&`
 
@@ -63,7 +63,7 @@ Similarly, the `&` operator defines intersection types.
 boat = vehicle & floater
 ```
 
-A `boat` is both a `vehicle` and a `floater`. It inherits both types.
+A `boat` is both a `vehicle` and a `floater`. It is a subtype of both types.
 
 ### Tuples `( )`
 
@@ -198,7 +198,7 @@ arr = [
 ]
 ```
 
-Assignments can be made in a sequence. Assigned types will not be returned when iterating the sequence, but any work done will happen whilst the sequences is iterated. This is as if all sequences were implemented as a `yield return`.
+Assignments can be made in a sequence and will behave the same as an imperitive block of code. Assigned types will be returned as part of the sequence.
 
 ```
 arr = [

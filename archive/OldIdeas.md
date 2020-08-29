@@ -53,3 +53,26 @@ age = {
     return = 42
 }.return
 ```
+
+## Yield return as an array of functions
+
+"Yield return" functionality from C# can be represented as an array of functions. We can chose to accept a parameter type of `yield` to make our intentions clearer, but the parameter is never used.
+
+```
+numberWords = [
+    yield => "One"
+    yield => {
+        doSomeStuff _
+        return = "Two"
+    }.return
+    yield => "Three"
+]
+```
+
+The `foreach` function iterates through each of these items, executes the function, then passes the return value into another function.
+
+```
+foreach numberWords numberWord => {
+    print numberWord
+}
+```
