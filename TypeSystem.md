@@ -31,7 +31,7 @@ Intersection types create more restricted types; the new type must be assignable
 This idea can be combined with a predicate function to create a refinement type. To do this, we create an intersection of any type with an object containing an `isValid` function.
 
 ```
-multipleOf5 = integer & { isValid = i => modulo i 5 == 0 }
+multipleOf5 = integer & { isValid = i => is modulo i 5 0 }
 ```
 
 The type `multipleOf5` can only accept numbers that are multiples of 5. `10` is a `multipleOf5`.
@@ -53,27 +53,11 @@ possibleNames = "Fred" | "Jane" | "Sam"
 delayedPrint { message = possibleNames, delay = seconds 200 }
 ```
 
-One possibility is a special language 'type'. `"Fred" = string & concrete`.
+
+## Compile time
+
+Compiler must be aware of whether a type is a function or not.
 
 ```
-"Fred" = string & {
-    length = 4
-}
-string = [char]
-[t] = {
-    moveNext = _ => bool
-    getCurrent = _ => t
-}
-serializable = {
-    serialize = _ => [byte]
-}
-known = {
-    length = int
-}
-
-
-delayedPrint = { message = string, delay = timespan } => {
-    print message.length  // 4 | 3
-}
-
+possibleNames = string & { isValid: s => is s.length greaterThan 5 }
 ```
