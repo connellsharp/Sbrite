@@ -62,11 +62,11 @@ foreach numberWords numberWord => {
 
 Awaiting a callback can be done with a sequence too. It is another yield return, but this time, a sequence of `task` objects.
 
-> :warning: Not really sure how this can fit together. Work in progress.
-
 ```
 getUser = await $[
     response = client.get $"/user/{}"
     json = parseJson response.body
 ]
 ```
+
+The `await` function accepts a `[task]` parameter and returns a `task` itself. The completed result of that returned task is the same type as the last task in the sequence.

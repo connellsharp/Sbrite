@@ -2,11 +2,11 @@
 
 ## FizzBuzz
 
-The classic FizzBuzz kata can be achieved by assigning two refinement types, looping through a range and matching.
+The classic FizzBuzz kata can be achieved by assigning two [refinement types](TypeSystem.md#refinement-types), looping through a range and matching.
 
 ```
-multipleOf3 = integer & { isValid = i => modulo i 3 == 0 }
-multipleOf5 = integer & { isValid = i => modulo i 5 == 0 }
+multipleOf3 = integer & { isValid = i => is modulo i 3 0 }
+multipleOf5 = integer & { isValid = i => is modulo i 5 0 }
 
 foreach [0, .., 100] i => {
     print i --> (
@@ -25,7 +25,7 @@ A web API endpoint is just matching a request object looking and returning a res
 
 ```
 request --> (
-    { method = get, path = startswith "/users/" } => {
+    { method = get, path = "/users" } => {
         status = 200
 
         headers = [
@@ -37,44 +37,35 @@ request --> (
             basically = json
         }
     }
-    { method = get, path = startswith "/customers/" } => {
+    { method = get, path = "/customers" } => {
         status = 200
 
-        headers = [
-            ("ETag", "asdfajenuiersdfghg")
-        ]
-
-        body = {
-            this = is
-            basically = json
-        }
+        body = [ "Also", "can be", "an array" ]
      }
 )
 ```
 
-You could use a Mediator parameter to pass messages to other parts of your system.
+You could use another parameter to inject dependencies, for example a mediator or an MVC controller.
 
 ```
-executeRequest = (request, mediator) => {
+executeRequest = (request, thingsController) => {
     request --> (
-        { method = post, path = startswith "/things/" } => {
+        { method = post, path = "/things" } => {
             requestBody = jsonParse postThingRequest request.body
             
-            mediator.send {
-                messageType = createThingCommand
+            newThing = thingsController.create {
                 name = requestBody.name
             }
 
             status = 201
 
             headers = [
-                ("Location", pathCombine [request.url, "/"])
+                ("Location", pathCombine [request.url, newThing.id])
             ]
         }
     )
 }
 ```
-
 
 The request and response types are defined like this:
 
@@ -93,6 +84,8 @@ response = yourFunction request
 ```
 
 ## HTTP API wrapper module
+
+This example wraps up HTTP calls into a class-like object and interface.
 
 ```
 thing = { name = string }

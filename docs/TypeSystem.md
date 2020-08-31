@@ -6,6 +6,33 @@ Types are types, but so are concrete values, and so are functions. Objects are t
 
 What matters is the type hierarchy. `7` is an `integer`, an `integer` is a `number`, and a `number` is a `_`. Everything is a `_`.
 
+## Comparing types
+
+When checking for type equality or assignability, types are boiled-down to **3 core structures**: functions, objects and unions of objects.
+
+A `string` is just a `[char]`, and all sequences `[]` are just objects with a `getIterator` function. A `char` is an object and so is a `number` too.
+
+Intersection types create new object signatures and are therefore just objects themselves. The following lines are equivalent:
+
+```
+newType = { name = "Fred", age = 30 } & { email = "fred@example.com" }
+newType = { name = "Fred", age = 30, email = "fred@example.com" }
+```
+
+Unions, however, cannot always create certain object signatures. When properties are the same, that is still certain, but some properties must remain unions.
+
+```
+newType = { name = "Fred", age = 30 } | { name = "Fred", age = 31 }
+newType = { name = "Fred", age = 30 | 31 }
+```
+
+A similar thing happens with a function's parameter and return type. Thus, a 'union of functions' is not one of the 3 core structures.
+
+```
+newFunc = in => out | somethingElse => out
+newFunc = in | somethingElse => out
+```
+
 ## Scoping
 
 Types can be overridden in a sub scope only to make them more specific.
@@ -53,6 +80,7 @@ possibleNames = "Fred" | "Jane" | "Sam"
 delayedPrint { message = possibleNames, delay = seconds 200 }
 ```
 
+The solution to this problem requires some concept of [concretion](ramblings/ConcretionProblem.md).
 
 ## Compile time
 

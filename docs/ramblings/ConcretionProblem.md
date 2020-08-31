@@ -1,6 +1,4 @@
-# Concretion
-
-## Problem
+# Concretion Problem
 
 > :warning: This is an unsolved problem. This page is just rambling on about the problem really...
 
@@ -27,7 +25,7 @@ possibleNames = string & { isValid: s => is s.length greaterThan 5 }
 
 Here `possibleNames.length` is `greaterThan 5`, but the compiler probably can't know that.
 
-### When do things need to happen at runtime?
+## When do things need to happen at runtime?
 
 `is` must be a runtime concept. It checks if the actual value of `s.length` at runtime can be assigned to `greaterThan 5`.
 
@@ -59,7 +57,7 @@ triplet = [ 1, 2, 3 ] | [ 4, 5, 6 ]
 
 Arrays are just objects with `length` and the sequence properties. `getIterator` had the same signature in both sides of the union, so it still has the same signature. `triplet` appears the same to the type system as a concrete array.
 
-### Intersection
+## Intersection
 
 ```
 possible = { propOne = 1, propTwo = 2 } & { propOne = 1, PropThree = 3 }
@@ -76,7 +74,7 @@ The compiler should somehow be aware that an intersection of 1 and 4 is not poss
 impossible = "Fred" & "Jane"
 ```
 
-### What about a special language type?
+## What about a special language type?
 
 One possibility is a special language 'type'. `"Fred" = string & concrete`.
 

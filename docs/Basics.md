@@ -6,8 +6,8 @@ An experimental programming language aiming to minimise language features in fav
 
 ## Ground rules
 
-1. **There are no keywords.** All language operators are made up of special characters. Common 'keywords' such as `if` and `foreach` are in fact functions defined in [core libraries](Core.md).
-2. **Values are just derived types.** A concrete value can be thought of as a subtype or an implementation of an interface. [Everything is a type](TypeSystem.md).
+1. **Values are just subtypes.** The concrete value `7` can be thought of as a subtype of `integer`. [Everything is a type](TypeSystem.md).
+2. **There are no keywords.** All language operators are made up of special characters. Common 'keywords' such as `if` and `foreach` are in fact functions defined in [core libraries](Core.md).
 3. **Functions have exactly one parameter.** Multiple parameters can be thought of as a single object or tuple.
 4. **No semi colons**. Breaking up statements is done by either a new line or a comma; the two are interchangable.
 
