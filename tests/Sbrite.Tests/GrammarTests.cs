@@ -80,11 +80,69 @@ namespace Sbrite.Tests
         }
 
         [Fact]
-        public void EmptyObjectWithWhitespaceContainsNoStatements()
+        public void EmptyObjectWithSpaceContainsNoStatements()
         {
             var input = "{ }";
             var parsed = Grammar.Object.Parse(input);
             Assert.Empty(parsed.Statements);
+        }
+
+        [Fact]
+        public void EmptyObjectWithMoreWhitespaceContainsNoStatements()
+        {
+            var input = "{       }";
+            var parsed = Grammar.Object.Parse(input);
+            Assert.Empty(parsed.Statements);
+        }
+
+        [Fact]
+        public void ObjectCanContainManyAssignmentsWithComma()
+        {
+            var input = "{ a = b, c = d }";
+            var parsed = Grammar.Object.Parse(input);
+            Assert.Equal(2, parsed.Statements.Count());
+        }
+
+        [Fact]
+        public void ObjectCanContainSingleAssignmentOnNewLine()
+        {
+            var input = "{\na = b\n}";
+            var parsed = Grammar.Object.Parse(input);
+            Assert.Equal(1, parsed.Statements.Count());
+        }
+        [Fact]
+        public void ObjectCanContainManyAssignmentsOnNewLinesWithComma()
+        {
+            var input = "{\na = b,\nc = d\n}";
+            var parsed = Grammar.Object.Parse(input);
+            Assert.Equal(2, parsed.Statements.Count());
+        }
+
+        [Fact]
+        public void ObjectCanContainManyAssignmentsOnNewLines()
+        {
+            var input = "{\na = b\nc = d\n}";
+            var parsed = Grammar.Object.Parse(input);
+            Assert.Equal(2, parsed.Statements.Count());
+        }
+
+        [Fact]
+        public void ObjectCanContainManyAssignmentsOnNewLinesWithBlankLines()
+        {
+            var input = "{\n\na = b\n\n\nc = d\n}";
+            var parsed = Grammar.Object.Parse(input);
+            Assert.Equal(2, parsed.Statements.Count());
+        }
+
+        [Fact]
+        public void ObjectCanContainManyAssignmentsOnNewLinesWithSpaces()
+        {
+            var input = @"{
+                a = b
+                c = d
+            }";
+            var parsed = Grammar.Object.Parse(input);
+            Assert.Equal(2, parsed.Statements.Count());
         }
 
         [Fact]
@@ -128,6 +186,14 @@ namespace Sbrite.Tests
         }
 
         [Fact]
+        public void TupleCanHaveTwoStatementsOnNewLines()
+        {
+            var input = "(\nfirst\nsecond\n)";
+            var parsed = Grammar.Tuple.Parse(input);
+            Assert.Equal(2, parsed.Statements.Count());
+        }
+
+        [Fact]
         public void FunctionCanReturnEmptyObject()
         {
             var input = "a => {}";
@@ -141,6 +207,22 @@ namespace Sbrite.Tests
             var input = "a => ()";
             var parsed = Grammar.Function.Parse(input);
             Assert.NotNull(parsed.Execution.Tuple);
+        }
+
+        [Fact]
+        public void CanAssignAlias()
+        {
+            var input = "a = b";
+            var parsed = Grammar.Assignment.Parse(input);
+            Assert.Equal("b", parsed.Execution.Identifier);
+        }
+
+        [Fact]
+        public void CanAssignEmptyObject()
+        {
+            var input = "a = {}";
+            var parsed = Grammar.Assignment.Parse(input);
+            Assert.NotNull(parsed.Execution.Object);
         }
     }
 }
